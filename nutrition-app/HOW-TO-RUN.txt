@@ -1,0 +1,65 @@
+HOW TO RUN — Nutrition Food Guide
+══════════════════════════════════════════════════
+
+The app has two parts:
+  1. Flask ML backend  (Python 3)
+  2. Pre-built React frontend  (served by Node.js OR any web server)
+
+Both are pre-built / pre-configured — no compilation needed.
+
+──────────────────────────────────────────────────
+OPTION A  |  Node.js server  (recommended)
+──────────────────────────────────────────────────
+Requirements: Node.js (any version) + Python 3
+
+Step 1 — Start the ML backend (open a terminal):
+  cd flask-ml
+  pip install flask flask-cors scikit-learn pandas
+  python app.py
+
+Step 2 — Start the Node server (open another terminal):
+  node server.js
+
+Step 3 — Open your browser:
+  http://localhost:3000
+
+──────────────────────────────────────────────────
+OPTION B  |  Apache / Nginx / any static server
+──────────────────────────────────────────────────
+Requirements: Python 3  +  a web server (Apache / Nginx / etc.)
+
+Step 1 — Start the ML backend:
+  cd flask-ml
+  pip install flask flask-cors scikit-learn pandas
+  python app.py
+
+Step 2 — Point your web server document root at:
+  dist/public/
+
+Step 3 — Add a reverse proxy rule so /ml-api/* goes to:
+  http://localhost:5000/ml-api/*
+
+──────────────────────────────────────────────────
+OPTION C  |  Python built-in HTTP server (no Node.js)
+──────────────────────────────────────────────────
+Requirements: Python 3 only
+
+Step 1 — Start the ML backend:
+  cd flask-ml
+  pip install flask flask-cors scikit-learn pandas
+  python app.py
+
+Step 2 — In a second terminal, serve the frontend:
+  cd dist/public
+  python3 -m http.server 3000
+
+Step 3 — Open http://localhost:3000
+  (ML predictions work because the frontend calls localhost:5000 via same machine)
+
+──────────────────────────────────────────────────
+ENV VARS (Node.js server)
+──────────────────────────────────────────────────
+  PORT       Port for Node.js server   (default: 3000)
+  FLASK_URL  Flask backend URL         (default: http://localhost:5000)
+
+  Example: PORT=8080 FLASK_URL=http://myserver:5000 node server.js
